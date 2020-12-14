@@ -28,7 +28,7 @@ public class TestController {
         boolean b = CrowdUtil.judgeRequestType(httpServletRequest);
         logger.info("是否为json请求："+b);
         List<Admin> adminList = adminService.getAll();
-//        System.out.println(10/0);
+        System.out.println(10/0);
         modelMap.addAttribute(adminList);
         return "target";
     }

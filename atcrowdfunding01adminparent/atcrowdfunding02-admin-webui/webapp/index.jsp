@@ -11,6 +11,7 @@
     <title>Title</title>
     <base href="http://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}">
     <script type="text/javascript" src="jquery/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="layer/layer.js"></script>
     <script>
         $(function () {
             $("#btn1").click(function () {
@@ -31,6 +32,11 @@
                     }
                 })
             });
+
+            $("#btn2").click(function () {
+                layer.msg("这是一个layer测试弹框");
+            })
+
         })
     </script>
 </head>
@@ -39,5 +45,6 @@
 <a href="test/ssm.html">测试ssm整合环境</a>
 
 <button id="btn1">ajax测试</button>
+<button id="btn2">layer弹窗测试</button>
 </body>
 </html>

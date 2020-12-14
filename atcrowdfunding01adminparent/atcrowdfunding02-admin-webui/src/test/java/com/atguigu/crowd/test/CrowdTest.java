@@ -4,6 +4,7 @@ package com.atguigu.crowd.test;
 import com.atguigu.crowd.entity.Admin;
 import com.atguigu.crowd.mapper.AdminMapper;
 import com.atguigu.crowd.service.api.AdminService;
+import com.atguigu.crowd.util.CrowdUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -63,6 +64,11 @@ public class CrowdTest {
     public void testTx(){
         Admin admin = new Admin(null,"jerry","123123","汤姆","tom@qq.com",null);
         adminService.saveAdmin(admin);
+    }
+
+    @Test
+    public void md5(){
+        System.out.println(CrowdUtil.md5("123456"));
     }
 
 }
