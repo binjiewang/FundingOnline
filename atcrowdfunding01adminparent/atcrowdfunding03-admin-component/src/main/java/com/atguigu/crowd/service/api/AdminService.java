@@ -12,7 +12,7 @@ public interface AdminService {
 
     Admin getAdminByLoginAcct(String loginAcct, String userPswd);
 
-    public PageInfo<Admin> getAdminPage(String keyword, Integer pageNum, Integer pageSize);
+    PageInfo<Admin> getAdminPage(String keyword, Integer pageNum, Integer pageSize);
 
     void remove(Integer adminId);
 

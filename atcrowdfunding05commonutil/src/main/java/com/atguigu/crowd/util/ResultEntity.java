@@ -17,7 +17,7 @@ public class ResultEntity<T> {
         return new ResultEntity<E>(SUCCESS,null,null);
     }
 
-    public static <E> ResultEntity<E> successWithoutData(E data){
+    public static <E> ResultEntity<E> successWithData(E data){
         return new ResultEntity<E>(SUCCESS,null,data);
     }
 

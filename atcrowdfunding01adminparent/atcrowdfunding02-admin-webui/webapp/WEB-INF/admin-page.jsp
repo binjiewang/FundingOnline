@@ -53,6 +53,23 @@
         return false;
     }
 
+    function deleteAdmin(obj) {
+        debugger;
+        var adminId = $(obj).attr("adminId");
+        var pageNum = $(obj).attr("pageNum");
+        var keyword = $(obj).attr("keyword");
+        //html()或text()可获取值
+        var loginAcct = $(obj).parent().siblings("#loginAcct").text();
+        layer.msg('确定删除'+loginAcct+'吗？', {
+            time: 0 //不自动关闭
+            ,btn: ['确定', '取消']
+            ,yes: function(index){
+                layer.close(index);
+                window.location.href="/admin/remove/"+adminId+"/"+pageNum+"/"+keyword+".html";
+            }
+        });
+    }
+
 </script>
 
 <body>
@@ -117,7 +134,7 @@
 											<tr>
 												<td>${myStatus.count }</td>
 												<td><input type="checkbox"></td>
-												<td>${admin.loginAcct }</td>
+												<td id="loginAcct">${admin.loginAcct }</td>
 												<td>${admin.userName }</td>
 												<td>${admin.email }</td>
 												<td>
@@ -132,8 +149,9 @@
 													<%--<button type="button" class="btn btn-danger btn-xs">
 														<i class=" glyphicon glyphicon-remove"></i>
 													</button>--%>
-													<%--todo 删除时弹窗提示--%>
-													<a onclick="deleteAdmin()" href="/admin/remove/${admin.id}/${requestScope.pageInfo.pageNum}/${param.keyword}.html" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></a>
+
+													<%--<a onclick="deleteAdmin()" href="/admin/remove/${admin.id}/${requestScope.pageInfo.pageNum}/${param.keyword}.html" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></a>--%>
+													<a onclick="deleteAdmin(this)" adminId="${admin.id}" pageNum="${requestScope.pageInfo.pageNum}" keyword="${param.keyword}" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></a>
 												</td>
 											</tr>
 										</c:forEach>
