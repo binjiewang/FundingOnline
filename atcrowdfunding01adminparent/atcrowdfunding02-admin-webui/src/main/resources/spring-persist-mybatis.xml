@@ -27,6 +27,26 @@
         <!-- 装配数据源 -->
         <property name="dataSource" ref="dataSource"/>
 
+        <!--配置pageHelper插件-->
+        <property name="plugins">
+            <array>
+                <!-- 配置 PageHelper -->
+                <bean class="com.github.pagehelper.PageHelper">
+                    <!-- 配置相关属性 -->
+                    <property name="properties">
+                        <props>
+                            <!-- 配置数据库方言，告诉 PageHelper 当前使用的具体数据库， -->
+                            <!-- 让 PageHelper 可以根据当前数据库生成对应的分页 SQL 语 句 -->
+                            <prop key="dialect">mysql</prop>
+                            <!-- 配置页码的合理化修正 -->
+                            <!-- 让 PageHelper 自动把浏览器传来的 PageNum 修正到 0~总页 数范围 -->
+                            <prop key="reasonable">true</prop>
+                        </props>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
     </bean>
 
     <!-- 配置MapperScannerConfigurer来扫描Mapper接口所在的包 -->

@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.atguigu.crowd.exception.LoginAcctAlreadyInUseForUpdateException;
+import com.atguigu.crowd.exception.LoginAcctAlreadyInUseException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,7 +22,7 @@ import com.google.gson.Gson;
 @ControllerAdvice
 public class CrowdExceptionResolver {
 	
-	@ExceptionHandler(value = {LoginFailedException.class,AccessForbiddenException.class})
+	@ExceptionHandler(value = {LoginFailedException.class})
 	public ModelAndView resolveLoginFailedException(
 				LoginFailedException exception,
 				HttpServletRequest request,
@@ -29,6 +31,42 @@ public class CrowdExceptionResolver {
 	
 		String viewName = "admin-login";
 	
+		return commonResolve(viewName, exception, request, response);
+	}
+
+	@ExceptionHandler(value = {AccessForbiddenException.class})
+	public ModelAndView resolveLoginFailedException(
+			AccessForbiddenException exception,
+			HttpServletRequest request,
+			HttpServletResponse response
+	) throws IOException {
+
+		String viewName = "admin-login";
+
+		return commonResolve(viewName, exception, request, response);
+	}
+
+	@ExceptionHandler(value = {LoginAcctAlreadyInUseException.class})
+	public ModelAndView resolveLoginAcctAlreadyInUseException(
+			LoginAcctAlreadyInUseException exception,
+			HttpServletRequest request,
+			HttpServletResponse response
+	) throws IOException {
+
+		String viewName = "admin-add";
+
+		return commonResolve(viewName, exception, request, response);
+	}
+
+	@ExceptionHandler(value = {LoginAcctAlreadyInUseForUpdateException.class})
+	public ModelAndView resolveLoginAcctAlreadyInUseException(
+			LoginAcctAlreadyInUseForUpdateException exception,
+			HttpServletRequest request,
+			HttpServletResponse response
+	) throws IOException {
+
+		String viewName = "admin-edit";
+
 		return commonResolve(viewName, exception, request, response);
 	}
 	

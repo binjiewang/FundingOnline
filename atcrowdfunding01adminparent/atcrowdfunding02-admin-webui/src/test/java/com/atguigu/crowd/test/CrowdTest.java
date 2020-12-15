@@ -36,6 +36,15 @@ public class CrowdTest {
     }
 
     @Test
+    public void testInsert2(){
+        for (int i = 0; i < 183; i++) {
+            Admin admin = new Admin(null,"testAcct"+i,"testPwd"+i,"testName"+i,"testEmail"+i,null);
+            adminMapper.insert(admin);
+        }
+    }
+
+
+    @Test
     public void testInsert(){
         Admin admin = new Admin(null,"tom","123123","汤姆","tom@qq.com",null);
         int i = adminMapper.insert(admin);
