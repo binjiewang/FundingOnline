@@ -30,4 +30,9 @@ public class RoleServiceImpl implements RoleService {
 
         return pageInfo;
     }
+
+    @Override
+    public void updateRole(Role role) {
+        roleMapper.updateByPrimaryKeySelective(role);
+    }
 }

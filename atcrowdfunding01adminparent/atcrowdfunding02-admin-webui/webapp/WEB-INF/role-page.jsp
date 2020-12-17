@@ -1,64 +1,125 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+         pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
-<%@include file="/WEB-INF/include-head.jsp"%>
-<link rel="stylesheet" href="css/pagination.css" />
+<%@include file="/WEB-INF/include-head.jsp" %>
+<link rel="stylesheet" href="css/pagination.css"/>
 <script type="text/javascript" src="jquery/jquery.pagination.js"></script>
+<script type="text/javascript" src="crowd/my-role.js"></script>
 <script type="text/javascript">
+    $(function () {
+            //初始化加载
+            window.pageNum = 1;
+            window.pageSize = 5;
+            window.keyword = "";
 
-    $(function(){
+            generatePage();
 
-        // 调用后面声明的函数对页码导航条进行初始化操作
-        initPagination();
+            $("#searchBtn").click(function () {
+                window.keyword = $("#keywordInput").val();
+                generatePage();
+            });
 
-    });
+            //弹出新增模态框
+            $("#showAddModalBtn").click(function () {
+                //点击模态框外的地方不会消失
+                $("#addModal").modal({backdrop: "static"});
+                $("#addModal").modal("show");
+            });
 
-    // 生成页码导航条的函数
-    function initPagination() {
+            //新增模态框保存按钮
+            $("#saveRoleBtn").click(function () {
+                debugger;
+                var roleName = $.trim($("#addModal [name=roleName]").val());
 
-        // 获取总记录数
-        var totalRecord = ${requestScope.pageInfo.total};
+                if (roleName == "") {
+                    layer.msg("角色名不能为空");
+                    return false;
+                }
 
-        // 声明一个JSON对象存储Pagination要设置的属性
-        var properties = {
-            num_edge_entries: 3,								// 边缘页数
-            num_display_entries: 5,								// 主体页数
-            callback: pageSelectCallback,						// 指定用户点击“翻页”的按钮时跳转页面的回调函数
-            items_per_page: ${requestScope.pageInfo.pageSize},	// 每页要显示的数据的数量
-            current_page: ${requestScope.pageInfo.pageNum - 1},	// Pagination内部使用pageIndex来管理页码，pageIndex从0开始，pageNum从1开始，所以要减一
-            prev_text: "上一页",									// 上一页按钮上显示的文本
-            next_text: "下一页"									// 下一页按钮上显示的文本
-        };
+                $.ajax({
+                    url: "role/save.json",
+                    type: "post",
+                    data: {name: roleName},
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        var result = response.result;
+                        if (result == "SUCCESS") {
+                            layer.msg("添加角色成功");
+                            window.pageNum = 9999999;
+                            generatePage();
+                        }
 
-        // 生成页码导航条
-        $("#Pagination").pagination(totalRecord, properties);
+                        if (result == "FAILED") {
+                            layer.msg("操作失败！" + response.message);
+                        }
+                    },
+                    error: function (response) {
+                        layer.msg(response.status + " " + response.statusText);
+                    }
+                })
 
-    }
+                $("#addModal").modal("hide");
+                //情况模态框Input数据
+                $("#addModal [name=roleName]").val("");
+            });
 
-    // 回调函数的含义：声明出来以后不是自己调用，而是交给系统或框架调用
-    // 用户点击“上一页、下一页、1、2、3……”这样的页码时调用这个函数实现页面跳转
-    // pageIndex是Pagination传给我们的那个“从0开始”的页码
-    function pageSelectCallback(pageIndex, jQuery) {
+            //解决动态绑定用on
+            //编辑时回显值
+            $("#rolePageBody").on("click", ".pencilBtn", function () {
+                //点击模态框外的地方不会消失
+                $("#editModal").modal({backdrop: "static"});
+                $("#editModal").modal("show");
+                var roleName = $(this).parent().prev().text();
+                window.roleId = this.id;
+                $("#editModal [name=roleName]").val(roleName);
+            });
 
-        // 根据pageIndex计算得到pageNum
-        var pageNum = pageIndex + 1;
+            //更新模态框更新按钮
+            $("#updateRoleBtn").click(function () {
 
-        // 跳转页面
-        window.location.href = "admin/get/page.html?pageNum="+pageNum+"&keyword=${param.keyword}";
+                var roleName = $("#editModal [name=roleName]").val();
 
-        // 由于每一个页码按钮都是超链接，所以在这个函数最后取消超链接的默认行为
-        return false;
-    }
+                $.ajax({
+                    url:"role/update.json",
+                    type:"post",
+                    dataType:"json",
+                    data:{
+                        id:window.roleId,
+                        name:roleName
+                    },
+                    success: function (response) {
+                        console.log(response);
+                        var result = response.result;
+                        if (result == "SUCCESS") {
+                            layer.msg("修改角色成功");
+                            generatePage();
+                        }
+
+                        if (result == "FAILED") {
+                            layer.msg("操作失败！" + response.message);
+                        }
+                    },
+                    error: function (response) {
+                        layer.msg(response.status + " " + response.statusText);
+                    }
+                })
+
+                $("#editModal").modal("hide");
+            });
+
+        }
+    )
 
 </script>
 <body>
 
-<%@ include file="/WEB-INF/include-nav.jsp"%>
+<%@ include file="/WEB-INF/include-nav.jsp" %>
 <div class="container-fluid">
     <div class="row">
-        <%@ include file="/WEB-INF/include-sidebar.jsp"%>
+        <%@ include file="/WEB-INF/include-sidebar.jsp" %>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -67,15 +128,16 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <form action="admin/get/page.html" method="post" class="form-inline" role="form" style="float: left;">
+                    <form class="form-inline" role="form" style="float: left;">
                         <div class="form-group has-feedback">
                             <div class="input-group">
                                 <div class="input-group-addon">查询条件</div>
-                                <input name="keyword" class="form-control has-success" type="text"
+                                <input id="keywordInput" name="keyword" class="form-control has-success" type="text"
                                        placeholder="请输入查询条件">
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-warning">
+                        <%--type如果为submi会执行两次，导致查询错误--%>
+                        <button id="searchBtn" type="button" class="btn btn-warning">
                             <i class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
@@ -90,7 +152,8 @@
                         <i class="glyphicon glyphicon-plus"></i> 新增
                     </button> -->
                     <!-- 新代码 -->
-                    <a style="float: right;" href="admin/to/add/page.html" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i> 新增</a>
+                    <a style="float: right;" id="showAddModalBtn" class="btn btn-primary"><i
+                            class="glyphicon glyphicon-plus"></i> 新增</a>
                     <br>
                     <hr style="clear: both;">
                     <div class="table-responsive">
@@ -98,43 +161,12 @@
                             <thead>
                             <tr>
                                 <th width="30">#</th>
-                                <th width="30"><input type="checkbox"></th>
-                                <th>账号</th>
+                                <th width="30"><input id="summaryBox" type="checkbox"></th>
                                 <th>名称</th>
-                                <th>邮箱地址</th>
                                 <th width="100">操作</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <c:if test="${empty requestScope.pageInfo.list }">
-                                <tr>
-                                    <td colspan="6" align="center">抱歉！没有查询到您要的数据！</td>
-                                </tr>
-                            </c:if>
-                            <c:if test="${!empty requestScope.pageInfo.list }">
-                                <c:forEach items="${requestScope.pageInfo.list }" var="admin" varStatus="myStatus">
-                                    <tr>
-                                        <td>${myStatus.count }</td>
-                                        <td><input type="checkbox"></td>
-                                        <td>${admin.loginAcct }</td>
-                                        <td>${admin.userName }</td>
-                                        <td>${admin.email }</td>
-                                        <td>
-                                            <button type="button" class="btn btn-success btn-xs">
-                                                <i class=" glyphicon glyphicon-check"></i>
-                                            </button>
-                                            <!-- 旧代码 -->
-                                            <!-- <button type="button" class="btn btn-primary btn-xs">
-                                                <i class=" glyphicon glyphicon-pencil"></i>
-                                            </button> -->
-                                            <!-- 新代码 -->
-                                            <a href="admin/to/edit/page.html?adminId=${admin.id }&pageNum=${requestScope.pageInfo.pageNum }&keyword=${param.keyword }" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></a>
-                                            <a href="admin/remove/${admin.id }/${requestScope.pageInfo.pageNum }/${param.keyword }.html" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></a>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                            </c:if>
-                            </tbody>
+                            <tbody id="rolePageBody"></tbody>
                             <tfoot>
                             <tr>
                                 <td colspan="6" align="center">
@@ -149,5 +181,8 @@
         </div>
     </div>
 </div>
+
+<%@include file="/WEB-INF/modal-role-add.jsp" %>
+<%@include file="/WEB-INF/modal-role-edit.jsp" %>
 </body>
 </html>

@@ -9,4 +9,5 @@ public interface RoleService {
 
     PageInfo<Role> getRolePage(String keyword, Integer pageNum, Integer pageSize);
 
+    void updateRole(Role role);
 }
