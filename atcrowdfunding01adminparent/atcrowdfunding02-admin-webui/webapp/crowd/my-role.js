@@ -1,3 +1,16 @@
+function showConfirmModal(roleArray) {
+    $("#confirmModal").modal("show");
+    $("#roleNameDiv").empty();
+    window.roleIdArray=[];
+
+    for (var i = 0; i < roleArray.length; i++) {
+        var role = roleArray[i];
+        var roleName = role.roleName;
+        $("#roleNameDiv").append(roleName+"<br/>");
+        window.roleIdArray.push(role.roleId);
+    }
+}
+
 function generatePage() {
     var pageInfo = getPageInfoRemote();
     fillTableBody(pageInfo);

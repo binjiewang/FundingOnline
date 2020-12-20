@@ -83,12 +83,12 @@
                 var roleName = $("#editModal [name=roleName]").val();
 
                 $.ajax({
-                    url:"role/update.json",
-                    type:"post",
-                    dataType:"json",
-                    data:{
-                        id:window.roleId,
-                        name:roleName
+                    url: "role/update.json",
+                    type: "post",
+                    dataType: "json",
+                    data: {
+                        id: window.roleId,
+                        name: roleName
                     },
                     success: function (response) {
                         console.log(response);
@@ -108,6 +108,77 @@
                 })
 
                 $("#editModal").modal("hide");
+            });
+
+            // 全选/全不选按钮
+            $("#summaryBox").click(function () {
+                debugger;
+                $(".itemBox").prop("checked", this.checked);
+            });
+
+            //全选选择时，全选按钮点亮
+            $("#rolePageBody").on("click", ".itemBox", function () {
+                debugger;
+                var itemBoxLength = $(".itemBox").length;
+                var itemBoxCheckedLength = $(".itemBox:checked").length;
+                $("#summaryBox").prop("checked", itemBoxCheckedLength == itemBoxLength);
+            });
+
+            //单项删除按钮
+            $("#rolePageBody").on("click", ".removeBtn", function () {
+                debugger;
+                var roleName = $(this).parent().prev().text();
+                var roleArray = [{roleId: this.id, roleName: roleName}];
+                showConfirmModal(roleArray);
+            });
+
+            //批量删除按钮
+            $("#batchRemoveBtn").click(function () {
+                debugger;
+                var roleArray=[];
+                $(".itemBox:checked").each(function () {
+                    var roleId=this.id;
+                    var roleName = $(this).parent().next().text();
+                    roleArray.push({roleId:roleId,roleName:roleName})
+                });
+
+                if(roleArray.length==0){
+                    layer.msg("至少选择一个人进行删除");
+                    return;
+                }
+
+                showConfirmModal(roleArray);
+            });
+
+            //删除确认按钮
+            $("#removeRoleBtn").click(function () {
+                var requestBody = JSON.stringify(window.roleIdArray);
+                $.ajax({
+                        url: "/role/remove/by/role/id/array.json",
+                        type: "post",
+                        data: requestBody,
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (response) {
+                            console.log(response);
+                            var result = response.result;
+                            if (result == "SUCCESS") {
+                                layer.msg("删除角色成功");
+                                generatePage();
+                                $("#summaryBox").prop("checked",false);
+                            }
+
+                            if (result == "FAILED") {
+                                layer.msg("操作失败！" + response.message);
+                            }
+                        },
+                        error: function (response) {
+                            layer.msg(response.status + " " + response.statusText);
+                        }
+                    }
+                );
+
+                $("#confirmModal").modal("hide");
             });
 
         }
@@ -141,7 +212,7 @@
                             <i class="glyphicon glyphicon-search"></i> 查询
                         </button>
                     </form>
-                    <button type="button" class="btn btn-danger"
+                    <button id="batchRemoveBtn" type="button" class="btn btn-danger"
                             style="float: right; margin-left: 10px;">
                         <i class=" glyphicon glyphicon-remove"></i> 删除
                     </button>
@@ -184,5 +255,6 @@
 
 <%@include file="/WEB-INF/modal-role-add.jsp" %>
 <%@include file="/WEB-INF/modal-role-edit.jsp" %>
+<%@include file="/WEB-INF/modal-role-confirm.jsp" %>
 </body>
 </html>

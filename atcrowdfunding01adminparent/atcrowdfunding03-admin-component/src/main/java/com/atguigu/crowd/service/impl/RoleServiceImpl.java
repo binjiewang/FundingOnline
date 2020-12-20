@@ -1,6 +1,7 @@
 package com.atguigu.crowd.service.impl;
 
 import com.atguigu.crowd.entity.Role;
+import com.atguigu.crowd.entity.RoleExample;
 import com.atguigu.crowd.mapper.RoleMapper;
 import com.atguigu.crowd.service.api.RoleService;
 import com.github.pagehelper.PageHelper;
@@ -35,4 +36,17 @@ public class RoleServiceImpl implements RoleService {
     public void updateRole(Role role) {
         roleMapper.updateByPrimaryKeySelective(role);
     }
+
+    @Override
+    public void removeRole(List<Integer> roleIdList) {
+        RoleExample roleExample = new RoleExample();
+
+        RoleExample.Criteria roleExampleCriteria = roleExample.createCriteria();
+
+        roleExampleCriteria.andIdIn(roleIdList);
+
+        roleMapper.deleteByExample(roleExample);
+    }
+
+
 }
