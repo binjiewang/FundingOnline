@@ -6,7 +6,9 @@ import com.atguigu.crowd.util.ResultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,12 +19,11 @@ import java.util.Map;
  *
  * @author binjiewang
  */
-@Controller
+@RestController
 public class MenuHandler {
     @Autowired
     private MenuService menuService;
 
-    @ResponseBody
     @RequestMapping("/menu/get/whole/tree.json")
     public ResultEntity<Menu> getWholeTreeNew() {
         List<Menu> menuList = menuService.getAll();
@@ -50,10 +51,22 @@ public class MenuHandler {
         return ResultEntity.successWithData(root);
     }
 
-    @ResponseBody
     @RequestMapping("/menu/save.json")
     public ResultEntity<String> saveMenu(Menu menu) {
         menuService.saveMenu(menu);
         return ResultEntity.successWithoutData();
     }
+
+    @RequestMapping("/menu/update.json")
+    public ResultEntity<String> updateMenu(Menu menu) {
+        menuService.updateMenu(menu);
+        return ResultEntity.successWithoutData();
+    }
+
+    @RequestMapping("/menu/remove.json")
+    public ResultEntity<String> deleteMenu(@RequestParam("id")Integer id){
+        menuService.removeMenu(id);
+        return ResultEntity.successWithoutData();
+    }
+
 }

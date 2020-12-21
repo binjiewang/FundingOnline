@@ -47,7 +47,7 @@
                         console.log(response);
                         var result = response.result;
                         if (result == "SUCCESS") {
-                            layer.msg("添加角色成功");
+                            layer.msg("操作成功");
                             window.pageNum = 9999999;
                             generatePage();
                         }
@@ -94,7 +94,7 @@
                         console.log(response);
                         var result = response.result;
                         if (result == "SUCCESS") {
-                            layer.msg("修改角色成功");
+                            layer.msg("操作成功");
                             generatePage();
                         }
 
@@ -163,7 +163,7 @@
                             console.log(response);
                             var result = response.result;
                             if (result == "SUCCESS") {
-                                layer.msg("删除角色成功");
+                                layer.msg("操作成功");
                                 generatePage();
                                 $("#summaryBox").prop("checked",false);
                             }
