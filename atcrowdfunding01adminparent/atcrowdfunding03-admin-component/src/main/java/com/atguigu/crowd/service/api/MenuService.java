@@ -13,4 +13,6 @@ public interface MenuService {
      * @return
      */
     List<Menu> getAll();
+
+    void saveMenu(Menu menu);
 }

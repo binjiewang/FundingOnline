@@ -9,30 +9,57 @@
 <script type="text/javascript">
     $(function () {
 
-        $.ajax({
-            url: "menu/get/whole/tree.json",
-            type: "post",
-            dataType: "json",
-            success: function (response) {
-                var result = response.result;
-                if (result == "SUCCESS") {
-                    var setting = {
-                        view: {addDiyDom: myAddDiyDom,
-                            addHoverDom: myAddHoverDom,
-                            removeHoverDom: myRemoveHoverDom},
-                        data: {key: {url: "noUrl"}}
-                    };
-                    $.fn.zTree.init($("#treeDemo"), setting, response.data);
-                }
+        generatorZTree();
 
-                if (result == "FAILED") {
-                    layer.msg("初始化失败！" + response.message);
-                }
-            }
+        $("#treeDemo").on("click", ".addBtn", function () {
+            $("#menuAddModal").modal("show");
+            window.pid = this.id;
+            return false;
         });
 
+        $("#menuSaveBtn").click(function () {
+            debugger;
+            var pid = window.pid;
+            var name = $.trim($("#menuAddModal [name=name]").val());
+            var url =$.trim($("#menuAddModal [name=url]").val());
+            var icon = $("#menuAddModal [name=icon]:checked").val();
 
-    })
+            if(name=="" || url=="" ||icon==""||icon == undefined){
+                layer.msg("名称、地址或图标不可为空!!!")
+                return ;
+            }
+
+            $.ajax({
+                url:"menu/save.json",
+                type:"post",
+                data:{
+                    pid:pid,
+                    name:name,
+                    url:url,
+                    icon:icon
+                },
+                dataType:"json",
+                success: function (response) {
+                    var result = response.result;
+                    if (result == "SUCCESS") {
+                        layer.msg("添加权限成功");
+                        generatorZTree();
+                    }
+
+                    if (result == "FAILED") {
+                        layer.msg("操作失败！" + response.message);
+                    }
+                },
+                error: function (response) {
+                    layer.msg(response.status + " " + response.statusText);
+                }
+            });
+            $("#menuAddModal").modal("hide");
+            //不加function,相当于帮用户点击了一次reset
+            $("#menuResetBtn").click();
+        });
+
+        })
 </script>
 <body>
 
@@ -58,5 +85,7 @@
         </div>
     </div>
 </div>
+
+<%@ include file="/WEB-INF/modal-menu-add.jsp" %>
 </body>
 </html>

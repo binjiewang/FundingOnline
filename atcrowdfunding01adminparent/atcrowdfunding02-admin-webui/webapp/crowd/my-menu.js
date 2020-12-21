@@ -1,3 +1,28 @@
+//生成zTree
+function generatorZTree() {
+    $.ajax({
+        url: "menu/get/whole/tree.json",
+        type: "post",
+        dataType: "json",
+        success: function (response) {
+            var result = response.result;
+            if (result == "SUCCESS") {
+                var setting = {
+                    view: {addDiyDom: myAddDiyDom,
+                        addHoverDom: myAddHoverDom,
+                        removeHoverDom: myRemoveHoverDom},
+                    data: {key: {url: "noUrl"}}
+                };
+                $.fn.zTree.init($("#treeDemo"), setting, response.data);
+            }
+
+            if (result == "FAILED") {
+                layer.msg("初始化失败！" + response.message);
+            }
+        }
+    });
+}
+
 //修改默认图标
 function myAddDiyDom(treeId,treeNode) {
     console.log(treeId);
@@ -9,18 +34,16 @@ function myAddDiyDom(treeId,treeNode) {
 }
 
 function myAddHoverDom(treeId,treeNode){
-    debugger;
     var btnGroupId = treeNode.tId+"_btnGrp";
     var anchorId = treeNode.tId+"_a";
     if ($("#"+btnGroupId).length>0){
         return;
     }
 
-
     // 准备各个按钮的HTML标签
-    var addBtn = "<a id='"+treeNode.id+"' class='addBtn btn btn-info dropdown-toggle btn-xs' style='margin-left:10px;padding-top:0px;' href='#' title='添加子节点'>&nbsp;&nbsp;<i class='fa fa-fw fa-plus rbg '></i></a>";
-    var removeBtn = "<a id='"+treeNode.id+"' class='removeBtn btn btn-info dropdown-toggle btn-xs' style='margin-left:10px;padding-top:0px;' href='#' title='删除节点'>&nbsp;&nbsp;<i class='fa fa-fw fa-times rbg '></i></a>";
-    var editBtn = "<a id='"+treeNode.id+"' class='editBtn btn btn-info dropdown-toggle btn-xs' style='margin-left:10px;padding-top:0px;' href='#' title='修改节点'>&nbsp;&nbsp;<i class='fa fa-fw fa-edit rbg '></i></a>";
+    var addBtn = "<a id='"+treeNode.id+"' class='addBtn btn btn-info dropdown-toggle btn-xs' style='margin-left:10px;padding-top:0px;' href='#' title='添加子节点'>&nbsp;<i class='fa fa-fw fa-plus rbg '></i></a>";
+    var removeBtn = "<a id='"+treeNode.id+"' class='removeBtn btn btn-info dropdown-toggle btn-xs' style='margin-left:10px;padding-top:0px;' href='#' title='删除节点'>&nbsp;<i class='fa fa-fw fa-times rbg '></i></a>";
+    var editBtn = "<a id='"+treeNode.id+"' class='editBtn btn btn-info dropdown-toggle btn-xs' style='margin-left:10px;padding-top:0px;' href='#' title='修改节点'>&nbsp;<i class='fa fa-fw fa-edit rbg '></i></a>";
 
     var level = treeNode.level;
     var btnHTML="";
@@ -44,7 +67,6 @@ function myAddHoverDom(treeId,treeNode){
 }
 
 function myRemoveHoverDom(treeId,treeNode){
-    debugger;
     var btnGroupId = treeNode.tId+"_btnGrp";
     $("#"+btnGroupId).remove();
 }

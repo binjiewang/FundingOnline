@@ -5,7 +5,6 @@ import com.atguigu.crowd.service.api.MenuService;
 import com.atguigu.crowd.util.ResultEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -15,6 +14,7 @@ import java.util.Map;
 
 /**
  * 菜单controller
+ *
  * @author binjiewang
  */
 @Controller
@@ -24,20 +24,20 @@ public class MenuHandler {
 
     @ResponseBody
     @RequestMapping("/menu/get/whole/tree.json")
-    public ResultEntity<Menu> getWholeTreeNew(){
+    public ResultEntity<Menu> getWholeTreeNew() {
         List<Menu> menuList = menuService.getAll();
 
         Menu root = null;
         Map<Integer, Menu> menuMap = new HashMap<>(16);
 
         //将所有对象添加到menuMap，减少时间复杂度
-        for (Menu menu: menuList) {
-            menuMap.put(menu.getId(),menu);
+        for (Menu menu : menuList) {
+            menuMap.put(menu.getId(), menu);
         }
-        
+
         for (Menu menu : menuList) {
             Integer pid = menu.getPid();
-            if(pid == null){
+            if (pid == null) {
                 root = menu;
                 continue;
             }
@@ -48,5 +48,12 @@ public class MenuHandler {
         }
 
         return ResultEntity.successWithData(root);
+    }
+
+    @ResponseBody
+    @RequestMapping("/menu/save.json")
+    public ResultEntity<String> saveMenu(Menu menu) {
+        menuService.saveMenu(menu);
+        return ResultEntity.successWithoutData();
     }
 }
