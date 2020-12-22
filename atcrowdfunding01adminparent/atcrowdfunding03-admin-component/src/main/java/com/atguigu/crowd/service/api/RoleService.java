@@ -18,4 +18,7 @@ public interface RoleService {
     void updateRole(Role role);
 
     public void removeRole(List<Integer> roleIdList);
+
+    List<Role> getAssignedRole(Integer adminId);
+    List<Role> getUnAssignedRole(Integer adminId);
 }

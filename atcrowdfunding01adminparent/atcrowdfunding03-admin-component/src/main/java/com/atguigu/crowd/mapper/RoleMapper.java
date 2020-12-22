@@ -35,4 +35,7 @@ public interface RoleMapper {
      * @return
      */
     List<Role> selectRoleListByKeyword(String keyword);
+
+    List<Role> getAssignedRole(Integer adminId);
+    List<Role> getUnAssignedRole(Integer adminId);
 }

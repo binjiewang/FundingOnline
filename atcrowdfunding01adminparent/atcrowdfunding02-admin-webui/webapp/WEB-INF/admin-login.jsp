@@ -39,12 +39,12 @@
 			</h2>
 			<p>${requestScope.exception.message }</p>
 			<div class="form-group has-success has-feedback">
-				<input type="text" name="loginAcct" class="form-control" id="inputSuccess3"
+				<input type="text" value="tom" name="loginAcct" class="form-control" id="inputSuccess3"
 					placeholder="请输入登录账号" autofocus> <span
 					class="glyphicon glyphicon-user form-control-feedback"></span>
 			</div>
 			<div class="form-group has-success has-feedback">
-				<input type="password" name="userPswd" class="form-control" id="inputSuccess4"
+				<input type="password" value="123456" name="userPswd" class="form-control" id="inputSuccess4"
 					placeholder="请输入登录密码" style="margin-top: 10px;"> <span
 					class="glyphicon glyphicon-lock form-control-feedback"></span>
 			</div>

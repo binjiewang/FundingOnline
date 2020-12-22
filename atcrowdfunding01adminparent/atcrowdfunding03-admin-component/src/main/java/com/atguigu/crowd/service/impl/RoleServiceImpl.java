@@ -48,5 +48,15 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.deleteByExample(roleExample);
     }
 
+    @Override
+    public List<Role> getAssignedRole(Integer adminId) {
+        return roleMapper.getAssignedRole(adminId);
+    }
+
+    @Override
+    public List<Role> getUnAssignedRole(Integer adminId) {
+        return roleMapper.getUnAssignedRole(adminId);
+    }
+
 
 }

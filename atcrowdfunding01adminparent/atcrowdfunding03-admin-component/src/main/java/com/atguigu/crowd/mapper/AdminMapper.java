@@ -35,4 +35,9 @@ public interface AdminMapper {
      * @return
      */
     List<Admin> selectAdminListByKeyword(String keyword);
+
+    void deleteOLdRelationship(Integer adminId);
+
+    //@Param指定传入参数名称
+    void insertNewRelationship(@Param("adminId") Integer adminId,@Param("roleIdList") List<Integer> roleIdList);
 }
