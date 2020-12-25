@@ -1,12 +1,12 @@
 function showConfirmModal(roleArray) {
     $("#confirmModal").modal("show");
     $("#roleNameDiv").empty();
-    window.roleIdArray=[];
+    window.roleIdArray = [];
 
     for (var i = 0; i < roleArray.length; i++) {
         var role = roleArray[i];
         var roleName = role.roleName;
-        $("#roleNameDiv").append(roleName+"<br/>");
+        $("#roleNameDiv").append(roleName + "<br/>");
         window.roleIdArray.push(role.roleId);
     }
 }
@@ -72,7 +72,7 @@ function fillTableBody(pageInfo) {
         var checkboxTd = "<td><input id='" + roleId + "' class='itemBox' type='checkbox'></td>";
         var roleNameTd = "<td>" + roleName + "</td>";
 
-        var checkBtn = "<button type='button' class='btn btn-success btn-xs'><i class=' glyphicon glyphicon-check'></i></button>";
+        var checkBtn = "<button id='" + roleId + "'type='button' class='btn btn-success btn-xs checkBtn'><i class=' glyphicon glyphicon-check'></i></button>";
 
         // 通过button标签的id属性（别的属性其实也可以）把roleId值传递到button按钮的单击响应函数中，在单击响应函数中使用this.id
         var pencilBtn = "<button id='" + roleId + "' type='button' class='btn btn-primary btn-xs pencilBtn'><i class=' glyphicon glyphicon-pencil'></i></button>";
@@ -120,4 +120,61 @@ function paginationCallBack(pageIndex, JQuery) {
 
     // 取消页码超链接的默认行为
     return false;
+}
+
+//权限生成
+function fillAuthTree() {
+    debugger;
+
+    var ajaxReturn = $.ajax({
+        url: "assgin/get/all/auth.json",
+        type: "post",
+        dataType: "json",
+        "async": false
+    });
+
+    if (ajaxReturn.status != 200) {
+        layer.msg(ajaxReturn.status + " " + ajaxReturn.statusText);
+        return;
+    }
+
+    var authList = ajaxReturn.responseJSON.data;
+    var setting = {
+        "data": {
+            "simpleData": {
+                "enable": true,
+                "pIdKey": "categoryId"
+            },
+            "key": {
+                "name": "title"
+            }
+        }, "check": {"enable": true}
+    };
+
+    $.fn.zTree.init($("#authTreeDemo"), setting, authList);
+    var zTreeObj = $.fn.zTree.getZTreeObj("authTreeDemo");
+    zTreeObj.expandAll(true);
+
+    ajaxReturn = $.ajax({
+        url: "/assign/get/assigned/auth/id/by/role/id.json",
+        type: "post",
+        data: {
+            "roleId": window.roleId
+        },
+        dataType: "json",
+        "async": false
+    });
+    if (ajaxReturn.status != 200) {
+        layer.msg(ajaxReturn.status + " " + ajaxReturn.statusText);
+        return;
+    }
+
+    var authIdArray = ajaxReturn.responseJSON.data;
+    for (var i = 0; i < authIdArray.length; i++) {
+        var authId = authIdArray[i];
+        var treeNode = zTreeObj.getNodeByParam("id", authId);
+        var checked = true;
+        var checkTypeFlag = false;
+        zTreeObj.checkNode(treeNode, checked, checkTypeFlag);
+    }
 }

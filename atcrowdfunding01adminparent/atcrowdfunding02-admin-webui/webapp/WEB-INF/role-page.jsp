@@ -6,6 +6,8 @@
 <%@include file="/WEB-INF/include-head.jsp" %>
 <link rel="stylesheet" href="css/pagination.css"/>
 <script type="text/javascript" src="jquery/jquery.pagination.js"></script>
+<link rel="stylesheet" href="ztree/zTreeStyle.css"/>
+<script type="text/javascript" src="ztree/jquery.ztree.all-3.5.min.js"></script>
 <script type="text/javascript" src="crowd/my-role.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -135,14 +137,14 @@
             //批量删除按钮
             $("#batchRemoveBtn").click(function () {
                 debugger;
-                var roleArray=[];
+                var roleArray = [];
                 $(".itemBox:checked").each(function () {
-                    var roleId=this.id;
+                    var roleId = this.id;
                     var roleName = $(this).parent().next().text();
-                    roleArray.push({roleId:roleId,roleName:roleName})
+                    roleArray.push({roleId: roleId, roleName: roleName})
                 });
 
-                if(roleArray.length==0){
+                if (roleArray.length == 0) {
                     layer.msg("至少选择一个人进行删除");
                     return;
                 }
@@ -165,7 +167,7 @@
                             if (result == "SUCCESS") {
                                 layer.msg("操作成功");
                                 generatePage();
-                                $("#summaryBox").prop("checked",false);
+                                $("#summaryBox").prop("checked", false);
                             }
 
                             if (result == "FAILED") {
@@ -179,6 +181,54 @@
                 );
 
                 $("#confirmModal").modal("hide");
+            });
+
+            $("#rolePageBody").on("click", ".checkBtn", function () {
+                window.roleId = this.id;
+                $("#assignModal").modal("show");
+                fillAuthTree();
+            });
+            
+            $("#assignBtn").click(function () {
+                var authIdArray = [];
+
+                var zTreeObj = $.fn.zTree.getZTreeObj("authTreeDemo");
+                var checkedNodes = zTreeObj.getCheckedNodes();
+
+                for(var i = 0; i < checkedNodes.length; i++) {
+                    var checkedNode = checkedNodes[i];
+                    var authId = checkedNode.id;
+                    authIdArray.push(authId);
+                }
+
+                var requestBody = {
+                    "authIdArray":authIdArray,
+                    "roleId":[window.roleId]
+                };
+
+                requestBody = JSON.stringify(requestBody);
+
+                $.ajax({
+                    "url":"assign/do/role/assign/auth.json",
+                    "type":"post",
+                    "data":requestBody,
+                    "contentType":"application/json;charset=UTF-8",
+                    "dataType":"json",
+                    "success":function(response){
+                        var result = response.result;
+                        if(result == "SUCCESS") {
+                            layer.msg("操作成功！");
+                        }
+                        if(result == "FAILED") {
+                            layer.msg("操作失败！"+response.message);
+                        }
+                    },
+                    "error":function(response) {
+                        layer.msg(response.status+" "+response.statusText);
+                    }
+                });
+
+                $("#assignModal").modal("hide");
             });
 
         }
@@ -256,5 +306,6 @@
 <%@include file="/WEB-INF/modal-role-add.jsp" %>
 <%@include file="/WEB-INF/modal-role-edit.jsp" %>
 <%@include file="/WEB-INF/modal-role-confirm.jsp" %>
+<%@include file="/WEB-INF/modal-role-assign-auth.jsp" %>
 </body>
 </html>
