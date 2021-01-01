@@ -13,4 +13,5 @@ public class CrowdConstant {
 	public static final String ATTR_NAME_PAGE_INFO = "pageInfo";
 
 	public static final String MESSAGE_DELETE_INFO = "无法删除自己！";
+	public static final String MESSAGE_ACCESS_DENIED = "权限不足";
 }

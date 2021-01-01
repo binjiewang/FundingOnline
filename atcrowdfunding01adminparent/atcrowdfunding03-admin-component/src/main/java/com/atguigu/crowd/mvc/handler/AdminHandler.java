@@ -5,6 +5,7 @@ import com.atguigu.crowd.entity.Admin;
 import com.atguigu.crowd.service.api.AdminService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -64,6 +65,8 @@ public class AdminHandler {
     /**
      * 新增用户
      */
+    //进入方法之前权限验证
+    @PreAuthorize("hasAuthority('user:save')")
     @RequestMapping("/save/admin.html")
     public String saveAdmin(Admin admin){
         adminService.saveAdmin(admin);

@@ -32,7 +32,7 @@ public class AssignHandler {
     public String  saveAdminRoleRelationship(
             @RequestParam("adminId")Integer adminId,
             @RequestParam("pageNum")Integer pageNum,
-            @RequestParam("keyword")Integer keyword,
+            @RequestParam("keyword")String keyword,
             @RequestParam(value = "roleIdList",required = false)List<Integer> roleIdList){
 
         adminService.saveAdminRoleRelationship(adminId,roleIdList);
