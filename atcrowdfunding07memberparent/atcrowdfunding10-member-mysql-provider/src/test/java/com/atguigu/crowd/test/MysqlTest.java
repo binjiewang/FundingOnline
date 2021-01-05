@@ -32,11 +32,11 @@ public class MysqlTest {
 
     @Test
     public void insert() {
-        MemberPO memberPO = new MemberPO(null,"bjw",
+        /*MemberPO memberPO = new MemberPO(null,"bjw",
                 "123456","wangbinjie",
                 "123@qq.com",1,1,
                 "王彬杰","6666",1);
-        memberPOMapper.insert(memberPO);
+        memberPOMapper.insert(memberPO);*/
     }
 
 }
