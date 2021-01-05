@@ -25,8 +25,9 @@
 		</javaTypeResolver>
 
 		<!-- targetProject:生成Entity类的路径 -->
+		<!--后期项目vo,po包记得要指定包-->
 		<javaModelGenerator targetProject=".\src\main\java"
-			targetPackage="com.atguigu.crowd.entity">
+			targetPackage="com.atguigu.crowd.entity.po">
 			<!-- enableSubPackages:是否让schema作为包的后缀 -->
 			<property name="enableSubPackages" value="false" />
 			<!-- 从数据库返回的值被清理前后的空格 -->
@@ -49,7 +50,7 @@
 		</javaClientGenerator>
 
 		<!-- 数据库表名字和我们的entity类对应的映射指定 -->
-		<table tableName="t_auth" domainObjectName="Auth" />
+		<table tableName="t_member" domainObjectName="MemberPO" />
 
 	</context>
 </generatorConfiguration>
