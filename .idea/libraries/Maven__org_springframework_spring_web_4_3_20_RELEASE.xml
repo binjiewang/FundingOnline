@@ -8,6 +8,7 @@
     </JAVADOC>
     <SOURCES>
       <root url="jar://$MAVEN_REPOSITORY$/org/springframework/spring-web/4.3.20.RELEASE/spring-web-4.3.20.RELEASE-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/atcrowdfunding01adminparent/src/main/java" />
     </SOURCES>
   </library>
 </component>
