@@ -1,6 +1,5 @@
 package com.atguigu.crowd.test;
 
-import com.atguigu.crowd.entity.po.MemberPO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,8 @@ public class RedisTest {
 
     @Test
     public void test01() throws SQLException {
-        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
-        ops.set("bjw","xn");
+        /*ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
+        ops.set("bjw","xn");*/
     }
 
 
