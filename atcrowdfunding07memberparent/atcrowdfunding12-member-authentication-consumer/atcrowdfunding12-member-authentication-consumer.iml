@@ -144,6 +144,7 @@
     <orderEntry type="library" name="Maven: io.github.openfeign:feign-slf4j:10.2.3" level="project" />
     <orderEntry type="library" name="Maven: io.github.openfeign:feign-hystrix:10.2.3" level="project" />
     <orderEntry type="library" name="Maven: com.atguigu.crowd:atcrowdfunding05-common-util:1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: log4j:log4j:1.2.17" level="project" />
     <orderEntry type="module" module-name="atcrowdfunding09-member-entity" />
   </component>
 </module>

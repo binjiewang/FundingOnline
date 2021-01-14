@@ -26,6 +26,10 @@ public class ResultEntity<T> {
 
     }
 
+    //没有无参构造器分布式调用时，报错
+    public ResultEntity() {
+    }
+
     public ResultEntity(String result, String message, T data) {
         this.result = result;
         this.message = message;

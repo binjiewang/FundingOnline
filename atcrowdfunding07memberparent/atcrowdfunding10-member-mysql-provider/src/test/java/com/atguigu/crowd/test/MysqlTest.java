@@ -39,4 +39,9 @@ public class MysqlTest {
         memberPOMapper.insert(memberPO);*/
     }
 
+    @Test
+    public void  test02(){
+
+    }
+
 }

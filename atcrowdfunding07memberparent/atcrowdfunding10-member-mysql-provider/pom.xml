@@ -63,7 +63,6 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
-
     </dependencies>
 
     <!--提示test编译错误，加了这一段！实际原因为mybatis逆向工程生成的mapper与xml无法准确匹配，引用的类没有生成vo,po包-->

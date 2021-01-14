@@ -10,8 +10,14 @@ public class CrowdConstant {
 	
 	public static final String ATTR_NAME_EXCEPTION = "exception";
 	public static final String ATTR_NAME_LOGIN_ADMIN = "loginAdmin";
+	public static final String ATTR_NAME_LOGIN_MEMBER = "loginMember";
 	public static final String ATTR_NAME_PAGE_INFO = "pageInfo";
 
 	public static final String MESSAGE_DELETE_INFO = "无法删除自己！";
 	public static final String MESSAGE_ACCESS_DENIED = "权限不足";
+
+	public static final String REDIS_CODE_PREFIX = "redis_reg_";
+	public static final String Message = "message";
+	public static final String MESSAGE_CODE_NOT_EXISTS = "验证码超时或不存在";
+
 }
